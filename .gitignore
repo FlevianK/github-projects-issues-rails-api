@@ -5,8 +5,6 @@
 # Ignore all logfiles and tempfiles.
 /log/*
 /tmp/*
-log/*
-tmp/*
 !/log/.keep
 !/tmp/.keep
 logfile
@@ -14,6 +12,7 @@ logfile
 .byebug_history
 *.Ds_Store
 
-config/database.yml
-config/master.key
-config/credentials.yml.enc
+/config/database.yml
+/config/master.key
+/config/credentials.yml.enc
+/config/local_env.yml
