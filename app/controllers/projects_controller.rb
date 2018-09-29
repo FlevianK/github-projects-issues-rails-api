@@ -1,6 +1,11 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:update]
 
+  def index
+    @projects = Project.all
+    json_response(@projects)
+  end
+
   def create
     @project = Project.create!(project_params)
     json_response(@project, :created)
