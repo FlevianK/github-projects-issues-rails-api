@@ -3,4 +3,5 @@ Rails.application.routes.draw do
   post "projects", to: "projects#create"
   patch "projects/:id", to: "projects#update"
   post "issues", to: "issues#create"
+  patch "issues/:id", to: "issues#update"
 end

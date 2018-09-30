@@ -18,7 +18,7 @@ class ProjectsController < ApplicationController
     project_url = @project.repo
     @project = update_project(project_params)
     res = JSON.parse(GithubConnection.update(project_url, project_params).body)
-    json_response(@project)
+    json_response(res)
   end
 
   private
