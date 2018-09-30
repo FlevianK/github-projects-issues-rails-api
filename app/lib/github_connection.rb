@@ -35,4 +35,14 @@ module GithubConnection
     req["Accept"] = "application/vnd.github.inertia-preview+json"
     http.request(req) 
   end
+
+  def self.get_project_cards(url)
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = (uri.scheme == "https")
+    req = Net::HTTP::Get.new(uri.request_uri)
+    req.basic_auth("FlevianK", ENV["GITHUB_PASSWORD"])
+    req["Accept"] = "application/vnd.github.inertia-preview+json"
+    http.request(req) 
+  end
 end

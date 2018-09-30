@@ -1,15 +1,28 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:update]
+  before_action :set_project, only: [:update, :get_project_issues]
   before_action :set_url, only: [:create]
 
   def index
     projectsrepos = []
     @projects = Project.all
-    @projects.pluck(:repo).map do |repo|
+    projectsrepos = @projects.pluck(:repo).map do |repo|
       res = JSON.parse(GithubConnection.get_project_repo(repo).body)
-      projectsrepos.push(:name => res["name"], :repo => res["owner_url"])
+      {:name => res["name"], :repo => res["owner_url"]}
     end
     json_response(projectsrepos)
+  end
+
+  def get_project_issues
+    project_issues = []
+    cards_url = @project.repo.sub(@project.number.to_s, "columns/#{@project.number}/cards")
+    res = JSON.parse(GithubConnection.get_project_cards(cards_url).body)
+    res.each do |card|
+      if card.content_url.include? "/issues/"
+        project_issues.push(card)
+      end
+    end
+
+    project_issues
   end
 
   def create

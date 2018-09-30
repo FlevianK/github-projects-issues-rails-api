@@ -5,4 +5,5 @@ Rails.application.routes.draw do
   patch "projects/:id", to: "projects#update"
   post "issues", to: "issues#create"
   patch "issues/:id", to: "issues#update"
+  get "projects/:id/issues", to: "projects#get_project_issues"
 end
