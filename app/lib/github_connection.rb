@@ -14,4 +14,15 @@ module GithubConnection
     req.body = params.to_json
     http.request(req) 
   end
+
+  def self.update(url, params)
+    uri = URI.parse(url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    http.use_ssl = (uri.scheme == "https")
+    req = Net::HTTP::Patch.new(uri.request_uri)
+    req.basic_auth("FlevianK", ENV["GITHUB_PASSWORD"])
+    req["Accept"] = "application/vnd.github.inertia-preview+json"
+    req.body = params.to_json
+    http.request(req) 
+  end
 end
