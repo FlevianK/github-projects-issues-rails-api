@@ -3,15 +3,13 @@ class IssuesController < ApplicationController
   before_action :set_url
 
   def create
+    @issue = Issue.create!(issue_params)
     res = JSON.parse(GithubConnection.create(@url, issue_params).body)
-    issue = {:issue => res["id"]}
-    @issue = Issue.create!(issue)
-    json_response(@issue, :created)
+    update_issue(:repo => res["url"], :number => res["number"])
   end
 
   def update
-    @issue.update(issue_params)
-    json_response(@issue, :updated)
+    update_issue(issue_params)
   end
 
   private
@@ -26,5 +24,10 @@ class IssuesController < ApplicationController
 
   def set_url
     @url = "#{GithubConnection::URL}/issues"
+  end
+
+  def update_issue(updated_params)
+    @issue.update(updated_params)
+    json_response(@issue, :updated)
   end
 end
