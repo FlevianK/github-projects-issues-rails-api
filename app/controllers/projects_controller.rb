@@ -3,14 +3,19 @@ class ProjectsController < ApplicationController
   before_action :set_url, only: [:create]
 
   def index
+    projectsrepos = []
     @projects = Project.all
-    json_response(@projects)
+    @projects.pluck(:repo).map do |repo|
+      res = JSON.parse(GithubConnection.get_project_repo(repo).body)
+      projectsrepos.push(:name => res["name"], :repo => res["owner_url"])
+    end
+    json_response(projectsrepos)
   end
 
   def create
     @project = Project.create!(project_params)
     res = JSON.parse(GithubConnection.create(@url, project_params).body)
-    update_project(:repo => res["url"], :number => res["number"])
+    update_project(:repo => res["url"], :number => res["id"])
     json_response(@project, :created)
   end
 
