@@ -1,5 +1,6 @@
 class ProjectsController < ApplicationController
   before_action :set_project, only: [:update]
+  before_action :set_url
 
   def index
     @projects = Project.all
@@ -7,7 +8,9 @@ class ProjectsController < ApplicationController
   end
 
   def create
-    @project = Project.create!(project_params)
+    res = JSON.parse(GithubConnection.create(@url, project_params).body)
+    project = {:project => res["id"], :repo => res["html_url"]}
+    @project = Project.create!(project)
     json_response(@project, :created)
   end
 
@@ -19,10 +22,14 @@ class ProjectsController < ApplicationController
   private
 
   def project_params
-    params.require(:project).permit(:project, :repo)
+    params.require(:project).permit(:name, :body)
   end
 
   def set_project
     @project = Project.find(params[:id])
+  end
+
+  def set_url
+    @url = "#{GithubConnection::URL}/projects"
   end
 end
