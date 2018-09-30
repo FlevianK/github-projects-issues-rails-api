@@ -8,15 +8,13 @@ class ProjectsController < ApplicationController
   end
 
   def create
+    @project = Project.create!(project_params)
     res = JSON.parse(GithubConnection.create(@url, project_params).body)
-    project = {:project => res["id"], :repo => res["html_url"]}
-    @project = Project.create!(project)
-    json_response(@project, :created)
+    update_project(:repo => res["owner_url"], :number => res["number"])
   end
 
   def update
-    @project.update(project_params)
-    json_response(@project, :updated)
+    update_project(project_params)
   end
 
   private
@@ -31,5 +29,10 @@ class ProjectsController < ApplicationController
 
   def set_url
     @url = "#{GithubConnection::URL}/projects"
+  end
+
+  def update_project(updated_params)
+    @project.update(updated_params)
+    json_response(@project, :updated)
   end
 end

@@ -1,5 +1,5 @@
 class Issue < ApplicationRecord
   has_many :project_issues
   has_many :projects, through: :project_issues
-  validates_presence_of :issue
+  validates_presence_of :title, :body
 end
