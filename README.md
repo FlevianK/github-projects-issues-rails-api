@@ -1,24 +1,30 @@
-# README
+# GITHUB Project and Issue APIs
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+This is an app that consumes the github API.
 
-Things you may want to cover:
+## Installation
 
-* Ruby version
+- Make sure you have Ruby 2.5.0 and Rails installed on your machine
 
-* System dependencies
+- Use github username and password as env variables
 
-* Configuration
+- Create and run migrations. `rails db:create` and `rails db:migrate`
 
-* Database creation
+- Start the application: `rails s`
 
-* Database initialization
+| EndPoint                       |   Functionality                                                |
+| -------------------------------| --------------------------------------------------------------:|
+| POST /projects                 | Create a project locally and Sync with GitHub                  |
+| PATCH /projects/:id            | Update a project locally and Sync with GitHub                  |
+| GET /projects/                 | Fetch ALL projects created locally and their repos from GitHub |
+| POST /issues                   | Create an Issue locally and Sync with GitHub                   |
+| PATCH /issues/:id              | Update an Issue locally and Sync with GitHub                   |
+| GET /projects/:id/issues       | Fetch ALL project issues                                       |
 
-* How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
+## Limitations
 
-* Deployment instructions
+  1. The API only responds with JSON
 
-* ...
+## Author
+  1. Flevian Kanaiza
