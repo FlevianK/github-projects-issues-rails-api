@@ -6,7 +6,7 @@ class ProjectsController < ApplicationController
     projectsrepos = []
     @projects = Project.all
     projectsrepos = @projects.pluck(:repo).map do |repo|
-      res = JSON.parse(GithubConnection.get_project_repo(repo).body)
+      res = JSON.parse(GithubConnection.get(repo).body)
       {:name => res["name"], :repo => res["owner_url"]}
     end
     json_response(projectsrepos)
@@ -14,12 +14,15 @@ class ProjectsController < ApplicationController
 
   def get_project_issues
     project_issues = []
-    cards_url = @project.repo.sub(@project.number.to_s, "columns/#{@project.number}/cards")
-    res = JSON.parse(GithubConnection.get_project_cards(cards_url).body)
-    res.each do |card|
-      if card.content_url.include? "/issues/"
-        project_issues.push(card)
-      end
+    cards = []
+    columns_url = "#{@project.repo}/columns"
+    project_columns = JSON.parse(GithubConnection.get(columns_url).body)
+    cards = project_columns.map do |column|
+      JSON.parse(GithubConnection.get(column["cards_url"]).body)
+    end
+
+    project_issues = cards.select do |card|
+      card["content_url"].include? "/issues/"
     end
 
     project_issues
