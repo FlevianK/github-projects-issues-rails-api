@@ -9,7 +9,7 @@ module GithubConnection
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = (uri.scheme == "https")
     req = Net::HTTP::Post.new(uri.request_uri)
-    req.basic_auth("FlevianK", ENV["GITHUB_PASSWORD"])
+    req.basic_auth("FlevianK", "kanaiza4388")
     req["Accept"] = "application/vnd.github.inertia-preview+json"
     req.body = params.to_json
     http.request(req) 
@@ -20,7 +20,7 @@ module GithubConnection
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = (uri.scheme == "https")
     req = Net::HTTP::Patch.new(uri.request_uri)
-    req.basic_auth("FlevianK", ENV["GITHUB_PASSWORD"])
+    req.basic_auth("FlevianK", "kanaiza4388")
     req["Accept"] = "application/vnd.github.inertia-preview+json"
     req.body = params.to_json
     http.request(req) 
@@ -31,7 +31,7 @@ module GithubConnection
     http = Net::HTTP.new(uri.host, uri.port)
     http.use_ssl = (uri.scheme == "https")
     req = Net::HTTP::Get.new(uri.request_uri)
-    req.basic_auth("FlevianK", ENV["GITHUB_PASSWORD"])
+    req.basic_auth("FlevianK", "kanaiza4388")
     req["Accept"] = "application/vnd.github.inertia-preview+json"
     http.request(req) 
   end
