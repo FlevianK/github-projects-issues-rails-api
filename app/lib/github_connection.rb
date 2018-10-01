@@ -2,7 +2,7 @@ require 'net/http'
 require "uri"
 
 module GithubConnection
-  URL = "https://api.github.com/repos/FlevianK/rails-api"
+  URL = "https://api.github.com/repos/#{ENV["GITHUB_USERNAME"].to_s}/rails-api"
 
   def self.create(url, params)
     http_method = "Post"
