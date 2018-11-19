@@ -19,6 +19,11 @@ module GithubConnection
     make_request(http_method, url)
   end
 
+  def self.delete(url)
+    http_method = "Delete"
+    make_request(http_method, url)
+  end
+
   def self.make_request(http_method, url, params=nil)
     uri = URI.parse(url)
     http = Net::HTTP.new(uri.host, uri.port)

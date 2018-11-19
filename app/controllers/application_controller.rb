@@ -1,5 +1,5 @@
 class ApplicationController < ActionController::API
   include Response
-  include GithubConnection
+  # include GithubConnection
   include ExceptionHandler
 end

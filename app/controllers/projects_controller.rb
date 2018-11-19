@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  before_action :set_project, only: [:update, :get_project_issues]
+  before_action :set_project, only: [:update, :get_project_issues, :delete]
   before_action :set_url, only: [:create]
 
   def index
@@ -26,7 +26,8 @@ class ProjectsController < ApplicationController
 
   def create
     @project = Project.create!(project_params)
-    res = JSON.parse(GithubConnection.create(@url, project_params).body)
+    created_project = GithubConnection.create(@url, project_params)
+    res = JSON.parse(created_project.body)
     update_project(:repo => res["url"], :number => res["id"])
     json_response(@project, :created)
   end
@@ -36,6 +37,12 @@ class ProjectsController < ApplicationController
     @project = update_project(project_params)
     res = JSON.parse(GithubConnection.update(project_url, project_params).body)
     json_response(res)
+  end
+
+  def delete
+    project_url = @project.repo
+    @project.destroy
+    GithubConnection.delete(project_url)
   end
 
   private
